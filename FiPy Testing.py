@@ -19,7 +19,7 @@ l = 0.00134901960784314 #Length of system
 
 nx = 134
 dx = l/nx
-x = np.linspace(0,l,nx)
+#x = np.linspace(0,l,nx)
 
 q = 1.602e-19  #Elementary Charge
 epsilon_r = 25 #Relative permittivity of system
@@ -39,20 +39,23 @@ k_rec = q*(mu_n+mu_p)/(2*epsilon)*10
 #Dp = 1    #Diffusion coefficient of positive ion species
 #Dn = 1    #Diffusion coefficient of negative ion species
 
-y01 = pini*((special.gamma(k1+p1))/(special.gamma(k1)*special.gamma(p1))*((x/l)**(k1-1))*(1-(x/l))**(p1-1))/7.3572
-# Initial positive ion charge density
+def y01(x):
+    """Initial positive ion charge density"""
+    return pini*((special.gamma(k1+p1))/(special.gamma(k1)*special.gamma(p1))*((x/l)**(k1-1))*(1-(x/l))**(p1-1))/7.3572
 
-y02 = nini*((special.gamma(k2+p2))/(special.gamma(k2)*special.gamma(p2))*((x/l)**(k2-1))*(1-(x/l))**(p2-1))/7.3572
-# Initial negative ion charge density
+def y02(x):
+    """"Initial negative ion charge density"""
+    return nini*((special.gamma(k2+p2))/(special.gamma(k2)*special.gamma(p2))*((x/l)**(k2-1))*(1-(x/l))**(p2-1))/7.3572
 
-y03 = a1*np.sin(b1*x+c1) + a2*np.sin(b2*x+c2)
-# Initial potential
+def y03(x):
+    """Initial potential"""
+    return a1*np.sin(b1*x+c1) + a2*np.sin(b2*x+c2)
 
 mesh = Grid1D(dx=dx, nx=nx)
 
-Pion = CellVariable(mesh=mesh, name='Positive ion Charge Density', value=y01)
-Nion = CellVariable(mesh=mesh, name='Negative ion Charge Density', value=y02)
-potential = CellVariable(mesh=mesh, name='Potential', value=y03)
+Pion = CellVariable(mesh=mesh, name='Positive ion Charge Density', value=y01(mesh.x))
+Nion = CellVariable(mesh=mesh, name='Negative ion Charge Density', value=y02(mesh.x))
+potential = CellVariable(mesh=mesh, name='Potential', value=y03(mesh.x))
 Jp = CellVariable(mesh=mesh, name='Positive ion Current Density', value=0.)
 Jn = CellVariable(mesh=mesh, name='Negative ion Current Density', value=0.)
 
