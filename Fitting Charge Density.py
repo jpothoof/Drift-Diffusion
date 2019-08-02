@@ -40,33 +40,76 @@ for nums in range_:
 nperov = 25
 nvac = 8.854187817e-12
 q = 1.6e-19
-dy2 = dy2*1e12*nperov*nvac*1e-6/q
+dy2 = dy2*1e12*nperov*nvac
 #plt.plot(posj_array,dy)
-plt.plot(posj_array,dy2)
-plt.show()
-
+#plt.plot(posj_array,dy2)
+#plt.show()
+#pini1 = max(dy2)
+#print(dy2)
 
 df = pd.DataFrame(posj_array,dy2)
-#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-  #print(df)
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+  print(dy2)
 
 pini = 9.634885e14
+pini1 = 154.1581560721245
+nini1 = -134.95618729
 nini = -8.434762e14
 k1 = 1.8
 p1 = 17
 k2 = 17
 p2 = 1.8
 l = 0.00134901960784314
-x = np.linspace(0,l,173)
+x_p = np.linspace(0,l,51)
+x_n = np.linspace(0,l,53)
+x = np.linspace(0,l,134)
 
-u01 = pini*((special.gamma(k1+p1))/(special.gamma(k1)*special.gamma(p1))*((x/l)**(k1-1))*(1-(x/l))**(p1-1))/7.3572
-u02 = nini*((special.gamma(k2+p2))/(special.gamma(k2)*special.gamma(p2))*((x/l)**(k2-1))*(1-(x/l))**(p2-1))/7.3572
-plt.plot(x,u01)
-plt.plot(x,u02)
+u01 = pini1*((special.gamma(k1+p1))/(special.gamma(k1)*special.gamma(p1))*((x/l)**(k1-1))*(1-(x/l))**(p1-1))/7.3572
+u02 = nini1*((special.gamma(k2+p2))/(special.gamma(k2)*special.gamma(p2))*((x/l)**(k2-1))*(1-(x/l))**(p2-1))/7.3572
+plt.plot(posj_array,u01)
+plt.plot(posj_array,u02)
 plt.show()
-u01_max = np.amax(u01)
-print(u01_max)
-u02_min = np.amin(u02)
-print(u02_min)
-print(u01_max/pini)
-print(u02_min/nini)
+'''pdy2 = dy2[39:90]
+ndy2 = dy2[52:105]
+
+def model(x, a):
+    return pini*np.exp(a*x)
+def n_model(x,b,c):
+    return nini*np.exp(b*x+c)
+
+params, param_covariance = optimize.curve_fit(model, x_p, pdy2)
+print(params)
+a = params
+
+n_params, n_param_covariance = optimize.curve_fit(n_model,x_n,ndy2)
+print(n_params)
+b, c = n_params
+
+plt.figure(1)
+plt.subplot(2,2,1)
+plt.plot(x_p,pini*np.exp(a*x_p))
+plt.plot(x_p,pdy2)
+plt.title('Positive Charge Density fit', y=1.08)
+
+plt.subplot(2,2,2)
+plt.plot(x_n,ndy2)
+plt.plot(x_n,nini*np.exp(b*x_n+c))
+plt.title('Negative Charge Density fit', y=1.08)
+
+plt.subplot(2,2,3)
+plt.plot(x_p,pini*np.exp(a*x_p))
+plt.plot(x_n,nini*np.exp(b*x_n+c))
+
+plt.show()
+
+#plt.plot(x,u01)
+#plt.plot(x,u02)
+
+#u01_max = np.amax(u01)
+#print(u01_max)
+#u02_min = np.amin(u02)
+#print(u02_min)
+#print(u01_max/pini)
+#print(u02_min/nini)
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+  #print(dy2)'''
