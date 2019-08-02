@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import special
-import fipy as fp
 from fipy import Variable, FaceVariable, CellVariable, Grid1D, ExplicitDiffusionTerm, TransientTerm, DiffusionTerm, Viewer, ImplicitSourceTerm, ConvectionTerm
 from fipy.tools import numerix
 
@@ -18,7 +17,7 @@ p1 = 17
 k2 = 17
 p2 = 1.8
 
-l = 0.00134901960784314 #Length of system
+l = 0.00000134901960784314 #Length of system in m
 
 nx = 134
 dx = l/nx
@@ -67,7 +66,7 @@ Pion.equation = TransientTerm(coeff=1, var=Pion) == -mu_p * (ConvectionTerm(coef
 Nion.equation = TransientTerm(coeff=1, var=Nion) == mu_n  * (ConvectionTerm(coeff=potential.faceGrad,var=Nion) + Nion *
                 potential.faceGrad.divergence) + DiffusionTerm(coeff=Dn,var=Nion) - k_rec*Pion*Nion
 
-potential.equation = DiffusionTerm(coeff=1, var=potential) == (-q/epsilon)*(Pion + Nion)
+potential.equation = DiffusionTerm(coeff=1, var=potential) == (-1/epsilon)*(Pion + Nion)
 
 Pion.constrain(0., where=mesh.exteriorFaces)
 Nion.constrain(0., where=mesh.exteriorFaces)
@@ -78,10 +77,10 @@ potential.constrain(0., where=mesh.exteriorFaces)
 eq = Pion.equation & Nion.equation & potential.equation
 
 steps = 253
-dt = 0.0000000000001
+dt = 0.0000000000000000001
 
 if __name__ == "__main__":
-    viewer = Viewer(vars=(potential,))
+    viewer = Viewer(vars=(Nion,))
 
 for steps in range(steps):
     eq.solve(dt=dt)
