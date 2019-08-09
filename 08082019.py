@@ -119,7 +119,7 @@ Pion = CellVariable(mesh=mesh, name='Positive ion Charge Density', value=y01(x))
 
 # Nion = CellVariable(mesh=mesh, name='Negative ion Charge Density', value=y02(x))
 
-potential = CellVariable(mesh=mesh, name='Potential', value=y03(x))
+potential = CellVariable(mesh=mesh, name='Potential', value=0.)
 
 # EQUATION SETUP BASIC DESCRIPTION
 '''Equations to solve for each variable must be defined:
